@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as z from "zod";
 import { Button } from "../../components/ui/button";
+import { useAuth } from "../../hooks/useAuth";
+import { useState } from "react";
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -18,14 +20,20 @@ type SignUpFormData = z.infer<typeof signupSchema>;
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const { register: registerUser } = useAuth();
+  const [error, setError] = useState("");
+
   const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = (data: SignUpFormData) => {
-    console.log(data);
-    // Add your signup logic here
-    navigate("/login");
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      await registerUser(data.name, data.email, data.password);
+      navigate("/dashboard");
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Failed to register");
+    }
   };
 
   return (
@@ -39,6 +47,12 @@ export const SignUp = () => {
         </div>
 
         <h2 className="text-2xl font-bold text-center mb-6">Create an Account</h2>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
