@@ -6,21 +6,16 @@ import { Button } from "../../components/ui/button";
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 
-const signupSchema = z
-  .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Invalid email address"),
-    phone: z
-      .string()
-      .min(10, "Phone number must be at least 10 digits")
-      .regex(/^\+?[\d\s\-\(\)]+$/, "Invalid phone number format"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+const signupSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits").regex(/^\+?[\d\s-()]+$/, "Invalid phone number format"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
 
 type SignUpFormData = z.infer<typeof signupSchema>;
 
@@ -28,29 +23,17 @@ export const SignUp = () => {
   const navigate = useNavigate();
   const { register: registerUser } = useAuth();
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignUpFormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
     resolver: zodResolver(signupSchema),
   });
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      await registerUser(data.name, data.email, data.phone, data.password);
-      setSuccess("Account created successfully! Redirecting to login...");
-      setError("");
-
-      // Redirect to login after 2 seconds
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+      await registerUser(data.name, data.email, data.password, data.phone);
+      navigate("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to register");
-      setSuccess("");
     }
   };
 
@@ -60,25 +43,15 @@ export const SignUp = () => {
         <div className="flex justify-center mb-8">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-4 h-4 bg-[url(/vector---0-3.svg)] bg-[100%_100%]" />
-            <span className="font-bold text-lg text-[#0c141c]">
-              MUST Lost & Found
-            </span>
+            <span className="font-bold text-lg text-[#0c141c]">MUST Lost & Found</span>
           </Link>
         </div>
 
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Create an Account
-        </h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Create an Account</h2>
 
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {success}
           </div>
         )}
 
@@ -109,9 +82,7 @@ export const SignUp = () => {
               placeholder="Enter your email"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
 
@@ -126,9 +97,7 @@ export const SignUp = () => {
               placeholder="Enter your phone number"
             />
             {errors.phone && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.phone.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
             )}
           </div>
 
@@ -143,9 +112,7 @@ export const SignUp = () => {
               placeholder="Enter your password"
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
             )}
           </div>
 
@@ -160,9 +127,7 @@ export const SignUp = () => {
               placeholder="Confirm your password"
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.confirmPassword.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
             )}
           </div>
 

@@ -1,5 +1,6 @@
 import { FileTextIcon, SearchIcon, UsersIcon } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "../../../../components/ui/button";
 import { Card, CardContent } from "../../../../components/ui/card";
 
@@ -70,15 +71,19 @@ export const HowItWorksSection = (): JSX.Element => {
               </div>
 
               <div className="flex flex-wrap justify-center gap-3 mt-8">
-                <Button className="h-12 bg-[#1670d3] text-[#f7f9fc] font-bold">
-                  Report Lost Item
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-12 bg-[#e8edf2] text-[#0c141c] font-bold border-none"
-                >
-                  Search Found Items
-                </Button>
+                <Link to="/report-lost-item">
+                  <Button className="h-12 bg-[#1670d3] text-[#f7f9fc] font-bold">
+                    Report Lost Item
+                  </Button>
+                </Link>
+                <Link to="/found-items">
+                  <Button
+                    variant="outline"
+                    className="h-12 bg-[#e8edf2] text-[#0c141c] font-bold border-none"
+                  >
+                    Search Found Items
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

@@ -31,6 +31,9 @@ const lostItemSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  images: [{
+    type: String,
+  }],
 }, { timestamps: true });
 
 export default mongoose.model('LostItem', lostItemSchema);

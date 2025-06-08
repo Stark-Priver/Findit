@@ -8,6 +8,7 @@ export const Navbar = (): JSX.Element => {
 
   const navItems = [
     { label: "Report Lost Item", href: "/report-lost-item" },
+    { label: "Report Found Item", href: "/report-found-item" },
     { label: "Search Found Items", href: "/found-items" },
   ];
 
@@ -16,7 +17,7 @@ export const Navbar = (): JSX.Element => {
       <Link to="/" className="flex items-center gap-4">
         <div className="w-4 h-4 bg-[url(/vector---0-3.svg)] bg-[100%_100%]" />
         <h1 className="font-bold text-lg text-[#0c141c] font-sans leading-[23px]">
-          MUST Lost &amp; Found
+          MUST Lost & Found
         </h1>
       </Link>
 
@@ -26,7 +27,7 @@ export const Navbar = (): JSX.Element => {
             <Link
               key={index}
               to={item.href}
-              className="font-medium text-sm text-[#0c141c] leading-[21px] font-sans"
+              className="font-medium text-sm text-[#0c141c] leading-[21px] font-sans hover:text-[#1670d3] transition-colors"
             >
               {item.label}
             </Link>
@@ -38,6 +39,11 @@ export const Navbar = (): JSX.Element => {
             <Link to="/dashboard">
               <Button variant="outline">Dashboard</Button>
             </Link>
+            {user?.role === 'admin' && (
+              <Link to="/admin">
+                <Button className="bg-purple-600 hover:bg-purple-700">Admin</Button>
+              </Link>
+            )}
             <Button 
               onClick={logout}
               variant="ghost"

@@ -19,11 +19,7 @@ export const Login = () => {
   const { login } = useAuth();
   const [error, setError] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -43,9 +39,7 @@ export const Login = () => {
         <div className="flex justify-center mb-8">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-4 h-4 bg-[url(/vector---0-3.svg)] bg-[100%_100%]" />
-            <span className="font-bold text-lg text-[#0c141c]">
-              MUST Lost & Found
-            </span>
+            <span className="font-bold text-lg text-[#0c141c]">MUST Lost & Found</span>
           </Link>
         </div>
 
@@ -69,9 +63,7 @@ export const Login = () => {
               placeholder="Enter your email"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
 
@@ -86,9 +78,7 @@ export const Login = () => {
               placeholder="Enter your password"
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
             )}
           </div>
 
@@ -101,12 +91,6 @@ export const Login = () => {
           Don't have an account?{" "}
           <Link to="/signup" className="text-[#1670d3] hover:underline">
             Sign up
-          </Link>
-        </p>
-        <p className="text-center mt-4 text-sm text-gray-600">
-          {" "}
-          <Link to="/" className="text-[#1670d3] hover:underline">
-            Forgot Password?
           </Link>
         </p>
       </div>

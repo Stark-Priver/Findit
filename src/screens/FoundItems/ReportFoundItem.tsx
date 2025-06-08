@@ -12,13 +12,13 @@ const reportSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   location: z.string().min(3, 'Location must be at least 3 characters'),
-  dateLost: z.string(),
+  dateFound: z.string(),
   category: z.string().min(1, 'Please select a category'),
 });
 
 type ReportFormData = z.infer<typeof reportSchema>;
 
-export const ReportLostItem = () => {
+export const ReportFoundItem = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,7 +89,7 @@ export const ReportLostItem = () => {
         imageUrls = await uploadImages(selectedImages);
       }
 
-      await axios.post('http://localhost:5000/api/items/lost', {
+      await axios.post('http://localhost:5000/api/items/found', {
         ...data,
         images: imageUrls
       });
@@ -104,7 +104,7 @@ export const ReportLostItem = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6">Report Lost Item</h2>
+        <h2 className="text-2xl font-bold mb-6">Report Found Item</h2>
         
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -169,7 +169,7 @@ export const ReportLostItem = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Last Seen Location
+                  Location Found
                 </label>
                 <input
                   {...register('location')}
@@ -184,15 +184,15 @@ export const ReportLostItem = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Date Lost
+                  Date Found
                 </label>
                 <input
-                  {...register('dateLost')}
+                  {...register('dateFound')}
                   type="date"
                   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1670d3]"
                 />
-                {errors.dateLost && (
-                  <p className="text-red-500 text-sm mt-1">{errors.dateLost.message}</p>
+                {errors.dateFound && (
+                  <p className="text-red-500 text-sm mt-1">{errors.dateFound.message}</p>
                 )}
               </div>
 
