@@ -4,7 +4,7 @@ import axios from 'axios';
 interface AuthContextType {
   user: any;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string, phone: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -39,12 +39,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string, phone: string) => {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/register', {
         name,
         email,
         password,
+        phone,
       });
       const { token, user } = response.data;
       localStorage.setItem('token', token);

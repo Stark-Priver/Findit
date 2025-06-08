@@ -15,7 +15,9 @@ interface FoundItem {
   finder: {
     name: string;
     email: string;
+    phone: string;
   };
+  images: string[];
 }
 
 export const FoundItemDetail = () => {
@@ -66,6 +68,22 @@ export const FoundItemDetail = () => {
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
             
+            {item.images && item.images.length > 0 && (
+              <div className="mb-6">
+                <h3 className="font-semibold text-gray-700 mb-2">Images</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {item.images.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`${item.title} - Image ${index + 1}`}
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-gray-700">Description</h3>
@@ -94,7 +112,8 @@ export const FoundItemDetail = () => {
 
               <div>
                 <h3 className="font-semibold text-gray-700">Contact Information</h3>
-                <p className="text-gray-600">{item.finder.email}</p>
+                <p className="text-gray-600">Email: {item.finder.email}</p>
+                <p className="text-gray-600">Phone: {item.finder.phone}</p>
               </div>
 
               <div>

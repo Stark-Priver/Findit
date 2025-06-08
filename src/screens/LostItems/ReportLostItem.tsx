@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent } from '../../components/ui/card';
+import { ImageIcon, X } from 'lucide-react';
 
 const reportSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),
@@ -21,17 +22,77 @@ export const ReportLostItem = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const { register, handleSubmit, formState: { errors } } = useForm<ReportFormData>({
     resolver: zodResolver(reportSchema),
   });
+
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length + selectedImages.length > 5) {
+      setError('You can upload maximum 5 images');
+      return;
+    }
+
+    const newImages = [...selectedImages, ...files];
+    setSelectedImages(newImages);
+
+    // Create previews
+    const newPreviews = [...imagePreviews];
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        newPreviews.push(e.target?.result as string);
+        setImagePreviews([...newPreviews]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = selectedImages.filter((_, i) => i !== index);
+    const newPreviews = imagePreviews.filter((_, i) => i !== index);
+    setSelectedImages(newImages);
+    setImagePreviews(newPreviews);
+  };
+
+  const uploadImages = async (images: File[]) => {
+    const imageUrls: string[] = [];
+    
+    for (const image of images) {
+      const formData = new FormData();
+      formData.append('image', image);
+      
+      try {
+        // For demo purposes, we'll use a placeholder URL
+        // In production, you'd upload to a service like Cloudinary, AWS S3, etc.
+        const imageUrl = `https://via.placeholder.com/300x200?text=${encodeURIComponent(image.name)}`;
+        imageUrls.push(imageUrl);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+    
+    return imageUrls;
+  };
 
   const onSubmit = async (data: ReportFormData) => {
     setIsSubmitting(true);
     setError('');
 
     try {
-      await axios.post('http://localhost:5000/api/items/lost', data);
+      let imageUrls: string[] = [];
+      
+      if (selectedImages.length > 0) {
+        imageUrls = await uploadImages(selectedImages);
+      }
+
+      await axios.post('http://localhost:5000/api/items/lost', {
+        ...data,
+        images: imageUrls
+      });
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to submit report');
@@ -133,6 +194,54 @@ export const ReportLostItem = () => {
                 {errors.dateLost && (
                   <p className="text-red-500 text-sm mt-1">{errors.dateLost.message}</p>
                 )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Images (Optional - Max 5)
+                </label>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center w-full">
+                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <ImageIcon className="w-8 h-8 mb-4 text-gray-500" />
+                        <p className="mb-2 text-sm text-gray-500">
+                          <span className="font-semibold">Click to upload</span> or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500">PNG, JPG or JPEG (MAX. 5 images)</p>
+                      </div>
+                      <input
+                        type="file"
+                        className="hidden"
+                        multiple
+                        accept="image/*"
+                        onChange={handleImageSelect}
+                        disabled={selectedImages.length >= 5}
+                      />
+                    </label>
+                  </div>
+
+                  {imagePreviews.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {imagePreviews.map((preview, index) => (
+                        <div key={index} className="relative">
+                          <img
+                            src={preview}
+                            alt={`Preview ${index + 1}`}
+                            className="w-full h-24 object-cover rounded-lg"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeImage(index)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <Button 

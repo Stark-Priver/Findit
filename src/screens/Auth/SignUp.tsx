@@ -9,6 +9,7 @@ import { useState } from "react";
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits").regex(/^\+?[\d\s-()]+$/, "Invalid phone number format"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -29,7 +30,7 @@ export const SignUp = () => {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      await registerUser(data.name, data.email, data.password);
+      await registerUser(data.name, data.email, data.password, data.phone);
       navigate("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to register");
@@ -82,6 +83,21 @@ export const SignUp = () => {
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Phone Number
+            </label>
+            <input
+              {...register("phone")}
+              type="tel"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1670d3]"
+              placeholder="Enter your phone number"
+            />
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
             )}
           </div>
 
