@@ -1,45 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { SearchIcon } from "lucide-react";
+import axios from 'axios';
 
-const foundItems = [
-  {
-    id: 1,
-    title: "Wallet",
-    location: "Found near the library",
-    date: "2024-01-20",
-    image: "..//depth-7--frame-0.png",
-    description: "Brown leather wallet containing student ID and bank cards",
-  },
-  {
-    id: 2,
-    title: "Backpack",
-    location: "Found in the cafeteria",
-    date: "2024-01-19",
-    image: "..//depth-7--frame-0-1.png",
-    description: "Black Nike backpack with laptop and notebooks inside",
-  },
-  {
-    id: 3,
-    title: "Notebook",
-    location: "Found in the lecture hall",
-    date: "2024-01-18",
-    image: "..//depth-7--frame-0-2.png",
-    description: "Blue spiral notebook with Physics notes",
-  },
-  {
-    id: 4,
-    title: "Keys",
-    location: "Found near the main gate",
-    date: "2024-01-17",
-    image: "..//depth-7--frame-0-3.png",
-    description: "Set of keys with a red keychain",
-  },
-];
+interface FoundItem {
+  _id: string;
+  title: string;
+  description: string;
+  category: string;
+  location: string;
+  dateFound: string;
+  status: string;
+  finder: {
+    name: string;
+    email: string;
+  };
+}
 
 export const FoundItemsList = () => {
+  const [foundItems, setFoundItems] = useState<FoundItem[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFoundItems();
+  }, []);
+
+  const fetchFoundItems = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/items/found');
+      setFoundItems(response.data);
+    } catch (error) {
+      console.error('Error fetching found items:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredItems = foundItems.filter(item =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -52,32 +61,49 @@ export const FoundItemsList = () => {
               <input
                 type="text"
                 placeholder="Search found items..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1670d3]"
               />
             </div>
-            <Button className="bg-[#1670d3]">Search</Button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {foundItems.map((item) => (
-            <Link key={item.id} to={`/found-items/${item.id}`}>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div
-                    className="h-48 bg-cover bg-center rounded-t-lg"
-                    style={{ backgroundImage: `url(${item.image})` }}
-                  />
-                  <div className="p-4">
-                    <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-                    <p className="text-gray-600 text-sm mb-2">{item.location}</p>
-                    <p className="text-gray-500 text-sm">Found on: {item.date}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+          {filteredItems.map((item) => (
+            <Card key={item._id} className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4">
+                <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm mb-2">{item.description}</p>
+                <p className="text-gray-600 text-sm mb-2">Location: {item.location}</p>
+                <p className="text-gray-500 text-sm mb-2">Category: {item.category}</p>
+                <p className="text-gray-500 text-sm mb-4">
+                  Found on: {new Date(item.dateFound).toLocaleDateString()}
+                </p>
+                <div className="flex gap-2">
+                  <Link to={`/found-items/${item._id}`}>
+                    <Button variant="outline" size="sm">
+                      View Details
+                    </Button>
+                  </Link>
+                  {item.status === 'available' && (
+                    <Link to={`/claim-item/${item._id}`}>
+                      <Button size="sm" className="bg-[#1670d3]">
+                        Claim Item
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
+
+        {filteredItems.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No found items match your search.</p>
+          </div>
+        )}
       </div>
     </div>
   );
