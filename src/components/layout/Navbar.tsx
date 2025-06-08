@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { useAuth } from "../../hooks/useAuth";
 
 export const Navbar = (): JSX.Element => {
+  const { isAuthenticated, logout, user } = useAuth();
+
   const navItems = [
     { label: "Report Lost Item", href: "/report-lost-item" },
     { label: "Search Found Items", href: "/found-items" },
@@ -30,11 +33,26 @@ export const Navbar = (): JSX.Element => {
           ))}
         </nav>
 
-        <Link to="/login">
-          <Button className="h-10 px-4 py-0 bg-[#1670d3] text-[#f7f9fc] font-bold text-sm rounded-lg">
-            Login / Register
-          </Button>
-        </Link>
+        {isAuthenticated ? (
+          <div className="flex items-center gap-4">
+            <Link to="/dashboard">
+              <Button variant="outline">Dashboard</Button>
+            </Link>
+            <Button 
+              onClick={logout}
+              variant="ghost"
+              className="text-red-600 hover:text-red-700"
+            >
+              Sign Out
+            </Button>
+          </div>
+        ) : (
+          <Link to="/login">
+            <Button className="h-10 px-4 py-0 bg-[#1670d3] text-[#f7f9fc] font-bold text-sm rounded-lg">
+              Login / Register
+            </Button>
+          </Link>
+        )}
       </div>
     </header>
   );

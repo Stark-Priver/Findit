@@ -7,7 +7,7 @@ import { Card, CardContent } from "../../../../components/ui/card";
 const howItWorksData = [
   {
     icon: <SearchIcon className="w-6 h-6" />,
-    title: "SearchIcon Found Items",
+    title: "Search Found Items",
     description:
       "Browse our database of found items, with detailed descriptions and contact information for the finders.",
   },
@@ -77,7 +77,7 @@ export const HowItWorksSection = (): JSX.Element => {
                   variant="outline"
                   className="h-12 bg-[#e8edf2] text-[#0c141c] font-bold border-none"
                 >
-                  SearchIcon Found Items
+                  Search Found Items
                 </Button>
               </div>
             </div>
