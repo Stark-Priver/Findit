@@ -14,6 +14,7 @@
 ## ✨ Features
 
 ### 🔑 Core Functionality
+
 - **📝 Report Lost Items** - Users can easily report items they've lost with detailed descriptions
 - **📢 Report Found Items** - Community members can register items they've found
 - **🔍 Search & Browse** - Advanced search functionality to find specific items
@@ -21,6 +22,7 @@
 - **📱 Responsive Design** - Fully responsive interface for desktop and mobile devices
 
 ### 🎯 Target Users
+
 - **Students** - Report and search for lost academic materials, personal items
 - **Staff** - Faculty and administrative staff item management
 - **Security Personnel** - Campus security integration for found items
@@ -28,12 +30,12 @@
 
 ## 🛠️ Technology Stack
 
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| ![Next.js](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=white) | Frontend Framework | Latest |
-| ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white) | Database | Latest |
-| ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black) | UI Library | Latest |
-| ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white) | Runtime Environment | Latest |
+| Technology                                                                             | Purpose             | Version |
+| -------------------------------------------------------------------------------------- | ------------------- | ------- |
+| ![Next.js](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=white)    | Frontend Framework  | Latest  |
+| ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)   | Database            | Latest  |
+| ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)         | UI Library          | Latest  |
+| ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white) | Runtime Environment | Latest  |
 
 ## 🚀 Getting Started
 
@@ -49,12 +51,14 @@ Make sure you have the following installed on your system:
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
-   git clone https://github.com/Stark-Priver/must-lost-found.git
-   cd must-lost-found
+   git clone https://github.com/Stark-Priver/Findit
+   cd Findit
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -62,8 +66,9 @@ Make sure you have the following installed on your system:
    ```
 
 3. **Environment Setup**
-   
+
    Create a `.env.local` file in the root directory:
+
    ```env
    MONGODB_URI=your_mongodb_connection_string
    NEXTAUTH_SECRET=your_nextauth_secret
@@ -71,6 +76,7 @@ Make sure you have the following installed on your system:
    ```
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    # or
@@ -78,7 +84,7 @@ Make sure you have the following installed on your system:
    ```
 
 5. **Open your browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## 📁 Project Structure
@@ -103,12 +109,14 @@ must-lost-found/
 ### For Users
 
 1. **📝 Reporting Lost Items**
+
    - Navigate to "Report Lost Item"
    - Fill in detailed item description
    - Add contact information
    - Submit the report
 
 2. **📢 Reporting Found Items**
+
    - Go to "Report Found Item"
    - Provide item details and location found
    - Upload photos if available
@@ -162,17 +170,20 @@ We welcome contributions from the Mbeya University community! Here's how you can
 **🚧 Currently Under Development**
 
 ### ✅ Completed Features
+
 - Basic project structure setup
 - Database schema design
 - Initial UI components
 
 ### 🔨 In Progress
+
 - User authentication system
 - Admin dashboard development
 - Item reporting functionality
 - Search and filter system
 
 ### 📅 Upcoming Features
+
 - Email notifications
 - Mobile app development
 - Advanced analytics
@@ -181,6 +192,7 @@ We welcome contributions from the Mbeya University community! Here's how you can
 ## 👨‍💻 Developer
 
 **Privertus Cosmas**
+
 - 🐙 GitHub: [@Stark-Priver](https://github.com/Stark-Priver)
 - 🎓 Affiliation: Mbeya University
 - 📧 Contact: [Add your contact information]
@@ -212,6 +224,6 @@ If you encounter any issues or have questions:
 
 [![GitHub](https://img.shields.io/badge/GitHub-Stark--Priver-black?style=flat&logo=github)](https://github.com/Stark-Priver)
 
-*Helping reunite people with their belongings, one item at a time* 🎯
+_Helping reunite people with their belongings, one item at a time_ 🎯
 
 </div>
