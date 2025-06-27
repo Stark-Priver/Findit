@@ -17,6 +17,7 @@ interface FoundItem {
     name: string;
     email: string;
   };
+  images?: string[];
 }
 
 export const FoundItemsList = () => {
@@ -73,6 +74,13 @@ export const FoundItemsList = () => {
           {filteredItems.map((item) => (
             <Card key={item._id} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-4">
+                <div className="mb-3">
+                  <img
+                    src={(item.images && item.images.length > 0) ? item.images[0] : '/vector---0-3.svg'}
+                    alt={item.title}
+                    className="w-full h-40 object-cover rounded-lg border"
+                  />
+                </div>
                 <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
                 <p className="text-gray-600 text-sm mb-2">{item.description}</p>
                 <p className="text-gray-600 text-sm mb-2">Location: {item.location}</p>

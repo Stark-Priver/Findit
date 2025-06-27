@@ -59,23 +59,8 @@ export const ReportFoundItem = () => {
   };
 
   const uploadImages = async (images: File[]) => {
-    const imageUrls: string[] = [];
-    
-    for (const image of images) {
-      const formData = new FormData();
-      formData.append('image', image);
-      
-      try {
-        // For demo purposes, we'll use a placeholder URL
-        // In production, you'd upload to a service like Cloudinary, AWS S3, etc.
-        const imageUrl = `https://via.placeholder.com/300x200?text=${encodeURIComponent(image.name)}`;
-        imageUrls.push(imageUrl);
-      } catch (error) {
-        console.error('Error uploading image:', error);
-      }
-    }
-    
-    return imageUrls;
+    // For local dev: use object URLs for preview and storage
+    return images.map(image => URL.createObjectURL(image));
   };
 
   const onSubmit = async (data: ReportFormData) => {

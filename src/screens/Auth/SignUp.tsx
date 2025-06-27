@@ -31,7 +31,7 @@ export const SignUp = () => {
   const onSubmit = async (data: SignUpFormData) => {
     try {
       await registerUser(data.name, data.email, data.password, data.phone);
-      navigate("/dashboard");
+      navigate("/login");
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to register");
     }

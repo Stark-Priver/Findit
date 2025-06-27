@@ -5,6 +5,7 @@ import { SignUp } from "./screens/Auth/SignUp";
 import { FoundItemsList } from "./screens/FoundItems/FoundItemsList";
 import { FoundItemDetail } from "./screens/FoundItems/FoundItemDetail";
 import { ReportLostItem } from "./screens/LostItems/ReportLostItem";
+import { LostItemDetail } from "./screens/LostItems/LostItemDetail";
 import { ReportFoundItem } from "./screens/FoundItems/ReportFoundItem";
 import { ClaimItem } from "./screens/FoundItems/ClaimItem";
 import { Dashboard } from "./screens/Dashboard/Dashboard";
@@ -12,6 +13,10 @@ import { AdminDashboard } from "./screens/Admin/AdminDashboard";
 import { Layout } from "./components/layout/Layout";
 import { AuthProtected } from "./components/AuthProtected";
 import { AdminProtected } from "./components/AdminProtected";
+import About from "./screens/Static/About";
+import Contact from "./screens/Static/Contact";
+import TermsOfService from "./screens/Static/TermsOfService";
+import PrivacyPolicy from "./screens/Static/PrivacyPolicy";
 
 export const App = () => {
   return (
@@ -30,6 +35,7 @@ export const App = () => {
             </AuthProtected>
           } 
         />
+        <Route path="/lost-items/:id" element={<LostItemDetail />} />
         <Route 
           path="/report-found-item" 
           element={
@@ -62,6 +68,10 @@ export const App = () => {
             </AdminProtected>
           }
         />
+      <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>
     </Layout>
   );
